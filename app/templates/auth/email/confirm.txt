@@ -1,0 +1,13 @@
+Dear {{ user.name }},
+
+Welcome to Andela inventory  confirmation email
+
+To confirm your account please click on the following link:
+
+{{ url_for('auth.confirm', token=token, _external=True) }}
+
+Sincerely,
+
+Team Margie
+
+Note: No need to reply to this email.
