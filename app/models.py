@@ -102,5 +102,32 @@ class User(UserMixin, db.Model):
         return True
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '<User %r>' % self.name
 # log in, tokens  generation finished
+
+# class Assert(db.Model):
+#     __tablename__ ='asserts'
+
+#     id = db.Column(db.Integer, primary=True)
+#     name = db.Column(db.String(64), index=True, Unique=True)
+#     assign = db.relationship('Assign', backref='assert', lazy='dynamic')
+
+#     def __repr__(self):
+#         return '<Assert %s>' % self.name
+
+
+# class Assign(db.Model):
+#     __tablename__ = 'assignments'
+
+#     id = db.Column(db.Integer, primary_key=True)
+
+#     assert_id = db.Column(db.Integer, db.ForeignKey('asserts.id'), nullable=False)
+#     requested_by_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+#     assigned_to = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+
+#     Serial_code = db.Column(db.Integer(255), nullable=False)
+#     Serial_no = db.Column(db.Integer(255), nullable=False)
+#     Assert_name = db.Column(db.String(255), nullable=False)
+#     Description = db.Column(db.String(255), nullable=False)
+#     confirmed = db.Column(db.Boolean, default=False)

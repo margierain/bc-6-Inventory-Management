@@ -6,7 +6,7 @@
 {% block content %}
 <div class="page-header">
     <h1>
-        Hello, {{ current_user.username }}!
+        Hello, {{ current_user.name }}!
     </h1>
     <h3>You have not confirmed your account yet.</h3>
     <div class="row">
@@ -20,7 +20,7 @@
     </p>
     <p>
         Need another confirmation email?
-        <a href="{{ url_for('auth.resend_confirmation') }}">Click here</a>
+        <a href="{{ url_for('auth.resend_confirmation') }}">Resend confirmation</a>
     </p>
 </div>
 {% endblock %}

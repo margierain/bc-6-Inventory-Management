@@ -33,10 +33,7 @@
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                         {{ current_user.name }} <b class="caret"></b>
                                     </a>
-                                </li>
                                     <ul class="dropdown-menu">
-                                        
-                                        
                                         <li><a href="{{ url_for('auth.change_password') }}">Change Password</a></li>
                                         <li><a href="{{ url_for('auth.change_email_request') }}">Change Email</a></li>
 
@@ -46,19 +43,7 @@
                                 {% else %}
                                 <li><a href="{{ url_for('auth.login') }}">Log In</a></li>
                                 {% endif %}
-                                <div class="profile-thumbnail">
-                                            {% if current_user.is_authenticated %}
-                                            <li>
-                                            <a href="{{ url_for('main.user', name=current_user.name) }}">
-                                                <img class="img-rounded profile-thumbnail"
-                                                src="{{ current_user.gravatar(size=30)  }}">
-                                                {% else %}
-                                                
-                                                <img class="{{url_for('static', filename='images/uploads/default.jpg') }}"
-                                                {% endif %}
-                                            </a>
-                                            </li>
-                                </div>            
+                                          
                         </ul>
                     </div>
                 </div>

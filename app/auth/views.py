@@ -47,7 +47,7 @@ def signup():
         db.session.commit()
         token = user.generate_confirmation_token()
         send_email(
-                    user.email, 'Confirmed Your store Account', 'auth/email/confirm',
+                    user.email, 'Confirmed Your Inventory Account', 'auth/email/confirm',
                     user=user, token=token)
         flash('Check your email for the confirmation Email from us!')
         login_user(user,form.password.data)
@@ -166,7 +166,7 @@ def change_email_request():
                         new_email,'Confirm your email Address', 'auth/email/change_email',
                         user= current_user, token=token)
             flash('We have send an email with instruction how to reset your password')
-            return redirected(url_for('main.index'))
+            return redirect(url_for('main.index'))
         else:
             flash('Password is Invalid')
     return render_template('auth/change_email.html', form=form)
