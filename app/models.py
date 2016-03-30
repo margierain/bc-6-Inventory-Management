@@ -132,7 +132,7 @@ class Assign(db.Model):
 
     assert_id = db.Column(db.Integer, db.ForeignKey('asserts.id'), nullable=False)
     requested_by_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    assigned_to = db.Column(db.Integer, db.ForeignKey('user.id'))
+    assigned_to = db.Column(db.Integer, db.ForeignKey('users.id'))
 
 
     serial_code  = db.Column(db.String(255), nullable=False)

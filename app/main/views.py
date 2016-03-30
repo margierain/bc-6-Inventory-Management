@@ -16,13 +16,16 @@ from app.main.forms import (InventoryRecordsForm, EditInventoryRecordsForm, Assi
 @main.route('/', methods=['GET', 'POST'])
 @login_required    
 def index():
+
     return render_template('main/index.html')
 
 @main.route('/assert_detail', methods=['GET', 'POST'])
 @login_required    
 def assert_detail():
-    return render_template('main/assert_detail.html')    
 
+    return render_template('main/assert_detail.html') 
+
+# renders the list of users in the database
 @main.route('/users', methods=['GET', 'POST'])
 @login_required    
 def users_list():
@@ -39,7 +42,7 @@ def add_assert():
         asserts = Assert(name=form.name.data)
         db.session.add(asserts)
         return redirect(url_for('main.index'))
-    return render_template('main/add_assert.html', form=form)
+    return render_template('main/add_asserts.html', form=form)
 
 
 @main.route('/view-assert/<int:assert_id>')
