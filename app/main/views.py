@@ -5,7 +5,7 @@ from flask.ext.login import login_required, current_user
 from app import db
 from app.main import main
 
-from app.models import  User,Assert, Assign
+from app.models import  User,Assert, Assign, Inventory
 from app.utils import send_email
 
 from app.main.forms import (InventoryRecordsForm, EditInventoryRecordsForm, AssignAssertForm,
@@ -19,11 +19,19 @@ def index():
 
     return render_template('main/index.html')
 
-@main.route('/assert_detail', methods=['GET', 'POST'])
+@main.route('/inventory_detail', methods=['GET', 'POST'])
 @login_required    
-def assert_detail():
+def inventory_detail():
+    form = InventoryRecordsForm()
 
-    return render_template('main/assert_detail.html') 
+    if form.validate_on_submit():
+        inventory = Inventory(serial_code=form.serial_code.data,
+                            serial_no=form.serial_no.data, assert_name=form.assert_name.data,
+                            description=form.description.data, date_bought=form.date_bought.data)
+        db.session.add(inventory)
+        db.session.commit()
+        return redirect(url_for('main.index'))
+    return render_template('main/inventory_detail.html', form=form) 
 
 # renders the list of users in the database
 @main.route('/users', methods=['GET', 'POST'])

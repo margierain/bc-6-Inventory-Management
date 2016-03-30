@@ -124,21 +124,33 @@ class Assert(db.Model):
     def __repr__(self):
         return '<Assert %s>' % self.name
 
+class Inventory(db.Model):
+    __tablename__ = 'inventories'
 
-class Assign(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    serial_code  = db.Column(db.String(255), nullable=False)
+    serial_no    = db.Column(db.Integer, nullable=False)
+    assert_name  = db.Column(db.String(255), nullable=False)
+    description  = db.Column(db.String(255), nullable=False)
+    date_bought  = db.Column(db.DateTime(), nullable=True)
+
+    invent = db.relationship('Assign', backref='inventory', lazy='dynamic')
+
+    def __repr__(self):
+        return '<Inventory %s>' % self.serial_code
+
+
+class Assign(Inventory):
     __tablename__ = 'assignments'
 
     id = db.Column(db.Integer, primary_key=True)
 
     assert_id = db.Column(db.Integer, db.ForeignKey('asserts.id'), nullable=False)
+    inventory_id = db.Column(db.Integer, db.ForeignKey('inventories.id'), nullable=False)
     requested_by_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     assigned_to = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-
-    serial_code  = db.Column(db.String(255), nullable=False)
-    serial_no    = db.Column(db.Integer, nullable=False)
-    assert_name  = db.Column(db.String(255), nullable=False)
-    description  = db.Column(db.String(255), nullable=False)
+    
     confirmed    = db.Column(db.Boolean, default=False)
     date_assigned = db.Column(db.DateTime(), index=True, default=datetime.utcnow)
     date_returned = db.Column(db.DateTime(), nullable=True)

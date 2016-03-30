@@ -12,12 +12,13 @@ from wtforms import validators
 
 class InventoryRecordsForm(Form):
     serial_code = TextField('Serial code', validators=[Required(), Length(10, 255)])
-    serial_no   = IntegerField('Serial number', validators=[Required(), Length(10, 255)])
+    serial_no   = IntegerField('Serial number', validators=[Required()])
     assert_name = SelectField('Name of Assert', coerce=int)
     description = TextField('Assert Description')
     date_bought = DateField("Date Purchased",
                           format='%d/%m/%Y')
-    
+    submit      = SubmitField('Add Inventory')
+
     def __init__(self, *args, **kwargs):
         super(InventoryRecordsForm, self).__init__(*args, **kwargs)
         self.assert_name.choices = [
