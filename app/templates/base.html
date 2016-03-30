@@ -42,16 +42,43 @@
                                 </li>
                                 {% else %}
                                 <li><a href="{{ url_for('auth.login') }}">Log In</a></li>
-                                {% endif %}
-                                          
-                        </ul>
+                                {% endif %}             
+                            </ul>
                     </div>
                 </div>
             </nav>
     {% endblock %}
+    {%block content %}
+        <div class="container-fluid main">
+            <div class="row">
+                <div class="col-sm-3 col-md-2 sidebar main-sidebar">
+                    <div class="nav nav-sidebar">
+                        <a href="{{ url_for('main.index') }}">
+                            <img class="img-rounded" src="{{ url_for('static', filename='images/logo.jpg')}}" alt="Brand" />
+                        </a>
+                        <hr>
+                        {% if current_user.is_authenticated %}
+                        <ul class="nav nav-sidebar">
+                        {% if current_user.is_admin %}
+                            <li>
+                                <a href="{{ url_for('main.assert_detail')}}">Assert Details</a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for('main.users_list')}}">Staff Members</a>
+                            </li>
+                        </ul><hr>
+                        {% endif %}
+                        {% endif %}
+                                           
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-9">
+                {% block page_content %}
+                
+                {% endblock %}
+            </div>
+        </div>
     </div>
-
-    {% block content %}
-        <p>Some page content here.</p>
     {% endblock %}
 </div>

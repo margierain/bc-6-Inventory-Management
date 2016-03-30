@@ -101,33 +101,52 @@ class User(UserMixin, db.Model):
         db.session.add(self)
         return True
 
+    @property
+    def asserts(self):
+        return Assign.query.filter_by(requested_by=self)
+
+    @property
+    def assigned(self):
+        return Assign.query.filter_by(assigned_to=self)
+
+
     def __repr__(self):
         return '<User %r>' % self.name
-# log in, tokens  generation finished
+# log in, tokens  generation end here
 
-# class Assert(db.Model):
-#     __tablename__ ='asserts'
+class Assert(db.Model):
+    __tablename__ ='asserts'
 
-#     id = db.Column(db.Integer, primary=True)
-#     name = db.Column(db.String(64), index=True, Unique=True)
-#     assign = db.relationship('Assign', backref='assert', lazy='dynamic')
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), index=True, unique=True)
+    assign = db.relationship('Assign', backref='assert', lazy='dynamic')
 
-#     def __repr__(self):
-#         return '<Assert %s>' % self.name
-
-
-# class Assign(db.Model):
-#     __tablename__ = 'assignments'
-
-#     id = db.Column(db.Integer, primary_key=True)
-
-#     assert_id = db.Column(db.Integer, db.ForeignKey('asserts.id'), nullable=False)
-#     requested_by_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-#     assigned_to = db.Column(db.Integer, db.ForeignKey('user.id'))
+    def __repr__(self):
+        return '<Assert %s>' % self.name
 
 
-#     Serial_code = db.Column(db.Integer(255), nullable=False)
-#     Serial_no = db.Column(db.Integer(255), nullable=False)
-#     Assert_name = db.Column(db.String(255), nullable=False)
-#     Description = db.Column(db.String(255), nullable=False)
-#     confirmed = db.Column(db.Boolean, default=False)
+class Assign(db.Model):
+    __tablename__ = 'assignments'
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    assert_id = db.Column(db.Integer, db.ForeignKey('asserts.id'), nullable=False)
+    requested_by_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    assigned_to = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+
+    serial_code  = db.Column(db.String(255), nullable=False)
+    serial_no    = db.Column(db.Integer, nullable=False)
+    assert_name  = db.Column(db.String(255), nullable=False)
+    description  = db.Column(db.String(255), nullable=False)
+    confirmed    = db.Column(db.Boolean, default=False)
+    date_assigned = db.Column(db.DateTime(), index=True, default=datetime.utcnow)
+    date_returned = db.Column(db.DateTime(), nullable=True)
+
+
+    def __repr__(self):
+        return "<Assign {!r:.15}{} Assigned On: {:%a %b %d %H:%M:%S %Y} >".format(
+            self.serial_code,
+            "...'" if len(self.serial_code) > 15 else '',
+            self.date_assigned
+        )    
