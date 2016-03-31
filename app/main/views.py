@@ -146,11 +146,9 @@ def update_inventory(inventory_id):
         abort(403)
     
     # Get the appropriate form for this user.
-    # if current_user.is_admin:
-    form = InventoryRecordsForm ()
-    # else:
-    #     form = ReportLostAssetForm()
-    # and the the post from users on lost items.
+   
+    form = InventoryRecordsForm()
+    
     if form.validate_on_submit():
 
         inventory.serial_code = form.serial_code.data
@@ -161,9 +159,9 @@ def update_inventory(inventory_id):
         inventory.confirmed   = form.confirmed.data
         inventory.date_assigned = form.date_assigned.data
         inventory.date_returned = form.date_returned.data
-        # import pdb; pdb.set_trace()
+       
         db.session.add(inventory)
-        
+    
         flash("Inventory list is up to date")
         return redirect(url_for('main.index'))
 
@@ -177,3 +175,22 @@ def update_inventory(inventory_id):
     form.date_returned = inventory.date_returned
     flash('No records changed')
     return render_template('main/update_inventory.html',form=form, inventory=inventory)
+
+@main.route('/Report_lost',methods=['GET', 'POST'])
+@login_required
+def report_lost():
+    form = ReportLostAssetForm()
+
+    if form.validate_on_submit():
+
+        lost= Report_lost(name=form.name.data,serial_code=form.serial_code.data,
+                            asset=form.asset_name.data, lost=form.lost.data)
+        db.session.add(lost)
+        db.session.commit()
+        send_email(app.config['INVENTORY_ADMIN'],'Report Lost Asset', 'main/email/report_lost', lost_asset=lost)
+        
+    return render_template('main/lost_asset.html', form=form)
+
+
+
+    

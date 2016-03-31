@@ -16,16 +16,16 @@ class InventoryRecordsForm(Form):
     asset_name = SelectField('Name of Asset', coerce=str)
     description = TextField('Asset Description')
     date_bought = DateField("Date Purchased",
-                          format='%Y/%m/%d')
+                          format='%Y/%m/%d',render_kw={"placeholder": "yyyy/mm/dd"})
     confirmed = BooleanField("Confirmed")
-    assigned = BooleanField("Assigned",validators=[Required()])
+    assigned = BooleanField("Assigned",validators=[Required()],render_kw={"placeholder": "yyyy/mm/dd"})
     resolved = BooleanField("Resolved")
     assigned_to_id = SelectField("Assigned To", coerce=str)
     date_assigned = DateField("Date Assigned",
-                                format='%Y/%m/%d')
+                                format='%Y/%m/%d',render_kw={"placeholder": "yyyy/mm/dd"})
 
     date_returned = DateField("Return date",
-                            format='%Y/%m/%d')
+                            format='%Y/%m/%d',render_kw={"placeholder": "yyyy/mm/dd"})
     submit      = SubmitField('Add Inventory')
 
     def __init__(self, *args, **kwargs):
@@ -36,17 +36,7 @@ class InventoryRecordsForm(Form):
         self.assigned_to_id.choices = [
             (use.name, use.name) for use in User.query.all()
         ]
-# # assign  assert to staff
-# class AdminUpdateInventoryForm(InventoryRecordsForm):
-    
-#     submit      = SubmitField('Update Asset')
 
-    
-
-#     def validate_assigned_to_id(self, field):
-#         id = field.data
-#         if not User.query.filter_by(id=id).first():
-#             flash("Staff has no been assigned asserts.")
 
 #form used to add new asserts 
 class AssetForm(Form):
@@ -83,9 +73,11 @@ class EditAdminProfileForm(Form):
             raise ValidationError("Username is taken")
 
 
-class ReportLostAssetForm(InventoryRecordsForm):
+class ReportLostAssetForm(Form):
+    name = StringField('Staff name', validators=[Required()])
+    serial_code = TextField('Serial code', validators=[Required(), Length(10, 255)])
+    asset_name = SelectField('Name of Asset')
     lost = BooleanField("Lost Asset")
-    found = BooleanField("Found Asset")
     submit = SubmitField("Report lost or found Asset")
 
     def __init__(self, *args, **kwargs):
