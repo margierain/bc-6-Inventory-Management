@@ -81,3 +81,12 @@ class EditAdminProfileForm(Form):
     def validate_name(self, field):
         if field.data != self.user.name and User.query.filter_by(name=field.data).first():
             raise ValidationError("Username is taken")
+
+
+class ReportLostAssetForm(InventoryRecordsForm):
+    lost = BooleanField("Lost Asset")
+    found = BooleanField("Found Asset")
+    submit = SubmitField("Report lost or found Asset")
+
+    def __init__(self, *args, **kwargs):
+        super(ReportLostAssetForm, self).__init__(*args, **kwargs)

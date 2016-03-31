@@ -9,7 +9,7 @@ from app.models import  User,Asset, Inventory
 from app.utils import send_email
 
 from app.main.forms import (InventoryRecordsForm, AdminUpdateInventoryForm,
-                              AssetForm, EditAdminProfileForm)
+                              AssetForm, EditAdminProfileForm,ReportLostAssetForm)
 
 
 
@@ -32,19 +32,20 @@ def index():
 @login_required    
 def inventory_detail():
     form = InventoryRecordsForm()
-
+    
+    inventory = Inventory.query.filter_by(asset_name=form.asset_name.data).all()
     if form.validate_on_submit():
-        asset = Asset.query.filter_by(id=int(form.asset_name.data)).first()
-        inventory = Inventory(asset_id=asset.id,serial_code=form.serial_code.data,
-                            serial_no=form.serial_no.data, asset_name=asset.name,
+        inventory = Inventory(serial_code=form.serial_code.data,
+                            serial_no=form.serial_no.data, asset_name=form.asset_name,
                             description=form.description.data, date_bought=form.date_bought.data)
         db.session.add(inventory)
         db.session.commit()
         return redirect(url_for('main.index'))
-    return render_template('main/inventory_detail.html', form=form) 
+    return render_template('main/inventory_detail.html', form=form, inventory=inventory) 
 
 # renders the list of users in the database
 @main.route('/users', methods=['GET', 'POST'])
+@login_required 
 @login_required    
 def users_list():
     users = User.query.order_by(User.name.asc()).all()
@@ -53,6 +54,7 @@ def users_list():
 
 # add paganation
 @main.route('/asset/add', methods=['GET', 'POST'])
+@login_required 
 def add_asset():
     form = AssetForm()
 
@@ -113,6 +115,8 @@ def update_inventory(inventory_id):
     # Get the appropriate form for this user.
     # if current_user.is_admin:
     form = AdminUpdateInventoryForm()
+    # else:
+    #     form = ReportLostAssetForm()
     # and the the post from users on lost items.
     if form.validate_on_submit():
 
