@@ -1,0 +1,6 @@
+Dear {{ user.name }}
+To confirm your new email address click on the click link below:
+{{ url_for('auth.change_email', token=token, _external=True) }}
+Sincerely,
+Team Margie
+Note: No  need to reply to this email
