@@ -21,7 +21,8 @@ class User(UserMixin, db.Model):
     last_seen = db.Column(db.DateTime(), default= datetime.utcnow)
 
     is_admin = db.Column(db.Boolean, default=False)
-    is_mini_admin = db.Column(db.Boolean, default=False)
+    
+    assigned = db.relationship('Inventory', backref='user', lazy='dynamic')
 
     def __init__(self, **kwargs):
         super(User,self).__init__(**kwargs)
@@ -102,63 +103,56 @@ class User(UserMixin, db.Model):
         return True
 
     @property
-    def asserts(self):
+    def assets(self):
         return Assign.query.filter_by(requested_by=self)
 
     @property
     def assigned(self):
-        return Assign.query.filter_by(assigned_to=self)
+        return Inventory.query.filter_by(assigned_to=self)
 
 
     def __repr__(self):
         return '<User %r>' % self.name
 # log in, tokens  generation end here
 
-class Assert(db.Model):
-    __tablename__ ='asserts'
+class Asset(db.Model):
+    __tablename__ ='assets'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), index=True, unique=True)
-    assign = db.relationship('Assign', backref='assert', lazy='dynamic')
+    inventory = db.relationship('Inventory', backref='asset', lazy='dynamic')
 
     def __repr__(self):
-        return '<Assert %s>' % self.name
+        return '<Asset %s>' % self.name
+
 
 class Inventory(db.Model):
     __tablename__ = 'inventories'
 
     id = db.Column(db.Integer, primary_key=True)
+
+    asset_id = db.Column(db.Integer, db.ForeignKey('assets.id'), nullable=False)
+    assigned_to_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    assigned_to = db.relationship('User', foreign_keys=[assigned_to_id])
+
     serial_code  = db.Column(db.String(255), nullable=False)
     serial_no    = db.Column(db.Integer, nullable=False)
-    assert_name  = db.Column(db.String(255), nullable=False)
+    asset_name  = db.Column(db.String(255), nullable=False)
     description  = db.Column(db.String(255), nullable=False)
     date_bought  = db.Column(db.DateTime(), nullable=True)
-
-    invent = db.relationship('Assign', backref='inventory', lazy='dynamic')
-
-    def __repr__(self):
-        return '<Inventory %s>' % self.serial_code
-
-
-class Assign(Inventory):
-    __tablename__ = 'assignments'
-
-    id = db.Column(db.Integer, primary_key=True)
-
-    assert_id = db.Column(db.Integer, db.ForeignKey('asserts.id'), nullable=False)
-    inventory_id = db.Column(db.Integer, db.ForeignKey('inventories.id'), nullable=False)
-    requested_by_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    assigned_to = db.Column(db.Integer, db.ForeignKey('users.id'))
-
-    
     confirmed    = db.Column(db.Boolean, default=False)
+    assigned     = db.Column(db.Boolean,default=False)
+    revolved     = db.Column(db.Boolean,default=False)
     date_assigned = db.Column(db.DateTime(), index=True, default=datetime.utcnow)
     date_returned = db.Column(db.DateTime(), nullable=True)
 
+    def __init__(self,*args,**kwargs):
+        super(Inventory,self).__init__(*args,**kwargs)
 
     def __repr__(self):
         return "<Assign {!r:.15}{} Assigned On: {:%a %b %d %H:%M:%S %Y} >".format(
             self.serial_code,
-            "...'" if len(self.serial_code) > 15 else '',
+            "...'" if len(self.description) > 15 else '',
             self.date_assigned
         )    

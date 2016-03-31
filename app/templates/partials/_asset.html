@@ -1,0 +1,95 @@
+
+
+<div class="panel {% if inventory.assigned_to %}panel-primary {% else %}panel-danger{% endif %}" id="details-panel">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            {{ inventory.serial_code|truncate(40, True) }}
+            
+            </h3>
+            
+    </div>
+    <div class="panel-body">
+        <table class="table table-bordered table-striped detail-table">
+            <tbody>
+               
+                
+                <tr>
+                    <td>Asset</td>
+                    <td>
+                        {{ inventory.asset_name }}
+                    </td>
+                </tr>
+                <tr {% if not inventory.assigned_to is defined %}class="warning"{% endif %}>
+                    <td>Assigned To</td>
+                    <td>
+                        {% if inventory.assigned_to is defined %}
+                            {{ inventory.assigned_to.name }}
+                        {% else %}
+                        <small><span class="text-muted">Asset not assigned </span></small>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Serial_code</td>
+                    <td>
+                        {{ inventory.serial_code }} 
+                    </td>
+                    
+                </tr>
+                <tr>
+                    <td>Serial_no</td>
+                    <td>
+                        {{inventory.serial_no  }}
+                    </td>
+                    
+                </tr>
+                <tr>
+                    <td>Asset Name</td>
+                    <td>
+                        {{ inventory.asset_name }}
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td> Asset desription</td>
+                    <td>
+                        {{ inventory.description }}
+                    </td>
+                </tr>
+                <tr>
+                    <td> Date bought</td>
+                    <td>
+                        {{ inventory.date_bought }}
+                    </td>
+                </tr>
+                <tr>
+
+                    <td> Confirmed</td>
+                    <td>
+                        {{ inventory.confirmed }}
+                    </td>
+                </tr>
+                <tr>
+                    <td> Assigned to </td>
+                    <td>
+                        {{ inventory.assigned_to_id }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>  Assigned date  </td>
+                    <td>
+                        {{ inventory.assigned_date  }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Return date  </td>
+                    <td>
+                        {{ inventory.return_date  }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div> <!-- panel-body -->
+</div> <!-- panel -->
+
+

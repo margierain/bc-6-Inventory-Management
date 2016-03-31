@@ -126,7 +126,7 @@ def password_reset_request():
             return redirect(url_for('auth.login'))
         else:
             flash('No account found with that email address')
-            return redirect(url_for('auth.change_password', form=form)) 
+            return redirect(url_for('auth.change_password'))
     return render_template('auth/reset_password.html', form=form)
 
 @auth.route('/reset/<token>', methods=['GET','POST'])

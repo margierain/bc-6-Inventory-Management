@@ -3,7 +3,7 @@ import os
 from flask.ext.script import Manager, Shell
 from flask.ext.migrate import Migrate, MigrateCommand
 
-from app.models import User, Assert, Assign
+from app.models import User, Asset, Inventory
 from app import create_app, db
 
 app = create_app(os.getenv('INVENTORY_CONFIG') or 'default')
