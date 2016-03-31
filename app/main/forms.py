@@ -13,40 +13,40 @@ from wtforms import validators
 class InventoryRecordsForm(Form):
     serial_code = TextField('Serial code', validators=[Required(), Length(10, 255)])
     serial_no   = IntegerField('Serial number', validators=[Required()])
-    asset_name = SelectField('Name of Asset', coerce=int)
+    asset_name = SelectField('Name of Asset', coerce=str)
     description = TextField('Asset Description')
     date_bought = DateField("Date Purchased",
-                          format='%d/%m/%Y')
+                          format='%Y/%m/%d')
+    confirmed = BooleanField("Confirmed")
+    assigned = BooleanField("Assigned",validators=[Required()])
+    resolved = BooleanField("Resolved")
+    assigned_to_id = SelectField("Assigned To", coerce=str)
+    date_assigned = DateField("Date Assigned",
+                                format='%Y/%m/%d')
+
+    date_returned = DateField("Return date",
+                            format='%Y/%m/%d')
     submit      = SubmitField('Add Inventory')
 
     def __init__(self, *args, **kwargs):
         super(InventoryRecordsForm, self).__init__(*args, **kwargs)
         self.asset_name.choices = [
-            (ass.id, ass.name) for ass in Asset.query.order_by(Asset.name).all()
+            (ass.name, ass.name) for ass in Asset.query.all()
         ]
-
-# assign  assert to staff
-class AdminUpdateInventoryForm(InventoryRecordsForm):
-    confirmed = BooleanField("Confirm  Request")
-    assigned = BooleanField("Assigned")
-    resolved = BooleanField("Resolved")
-    assigned_to_id = SelectField("Assigned To", coerce=int)
-    date_assigned = DateField("Return date",
-                            format='%d/%m/%Y')
-    date_returned = DateField("Return date",
-                            format='%d/%m/%Y') 
-    submit      = SubmitField('Update Asset')
-
-    def __init__(self, *args, **kwargs):
-        super(AdminUpdateInventoryForm, self).__init__(*args, **kwargs)
         self.assigned_to_id.choices = [
-            (use.id, use.name) for use in User.query.order_by(User.name).all()
+            (use.name, use.name) for use in User.query.all()
         ]
+# # assign  assert to staff
+# class AdminUpdateInventoryForm(InventoryRecordsForm):
+    
+#     submit      = SubmitField('Update Asset')
 
-    def validate_assigned_to_id(self, field):
-        id = field.data
-        if not User.query.filter_by(id=id).first():
-            flash("Staff has no been assigned asserts.")
+    
+
+#     def validate_assigned_to_id(self, field):
+#         id = field.data
+#         if not User.query.filter_by(id=id).first():
+#             flash("Staff has no been assigned asserts.")
 
 #form used to add new asserts 
 class AssetForm(Form):

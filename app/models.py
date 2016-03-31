@@ -27,7 +27,7 @@ class User(UserMixin, db.Model):
     def __init__(self, **kwargs):
         super(User,self).__init__(**kwargs)
         # Super admins are able to assign mini_admins
-        if not self.is_admin and not self.is_mini_admin:
+        if not self.is_admin:
             if self.email == current_app.config['INVENTORY_ADMIN']:
                 self.is_admin = True
 
@@ -145,7 +145,7 @@ class Inventory(db.Model):
     assigned     = db.Column(db.Boolean,default=False)
     revolved     = db.Column(db.Boolean,default=False)
     date_assigned = db.Column(db.DateTime(), index=True, default=datetime.utcnow)
-    date_returned = db.Column(db.DateTime(), nullable=True)
+    date_returned = db.Column(db.DateTime(), nullable=True, default=datetime.utcnow)
 
     def __init__(self,*args,**kwargs):
         super(Inventory,self).__init__(*args,**kwargs)
