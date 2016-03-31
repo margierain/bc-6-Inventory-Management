@@ -3,7 +3,7 @@
 {% import "partials/_alert_messages.html" as macros %}
 
 
-{% block title %}List of an Andela staff {% endblock %}
+{% block title %}List of assets assigned to users {% endblock %}
 
 {% block page_content %}
 
@@ -16,10 +16,17 @@
                 <div class="col-xs-10 col-sm-8 col-sm-offset-2 profile-form">
                     {{ macros.render_alert('alert-info') }}
                     <div class="list-group">
-                        {% if users | length > 0 %}
-                            {% for user in users %}
-                                <a href="{{ url_for('main.edit_profile_admin', name=user.name)}}" class="list-group-item"> {{ user.name }} </a>
+                        {% if inventory | length > 0 %}
+                            {% for invent in inventory %}
+                                <a href="{{ url_for('main.update_inventory',inventory_id=invent.id)}}" class="list-group-item"> {{ invent.asset_name }} </a>
+
                             {% endfor %}
+                        {%else%}
+                        <div class="well">
+                            
+                            <p> All Assets are currently Assigned</p>
+                        </div>
+
                         {% endif %}
                     </div>
                 </div>

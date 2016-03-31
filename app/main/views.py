@@ -62,19 +62,26 @@ def inventory_detail():
 def users_list():
     if current_user.is_admin:
         users = User.query.order_by(User.name.asc()).all()
-        return redirect(url_for('main.users_list.html', users=users)) 
+        return render_template('main/users_list.html', users=users) 
     return render_template('main/index.html')    
 
 
-# @main.route('/assigned_users_list')  
-# @login_required
-# def assigned_users_list():
-#     if current_user.is_admin:
-#         inventory = Inventory.query.order_by(assigned=True).all()
-#         return redirect(url_for('main.assigned_user_list.html', inventory=inventory)) 
-#     return render_template('main/index.html')    
-    
 
+@main.route('/assigned_users_list',methods=['GET', 'POST'])  
+@login_required
+def assigned_users_list():
+    if current_user.is_admin:
+        inventory = Inventory.query.filter_by(assigned=True).all()
+        return render_template('main/assigned_list.html', inventory=inventory)
+    return render_template('main/index.html')    
+    
+@main.route('/not_assigned_asset',methods=['GET', 'POST'])  
+@login_required
+def not_assigned_asset():
+    if current_user.is_admin:
+        inventory = Inventory.query.filter_by(assigned=False).all()
+        return render_template('main/not_assigned_asset.html', inventory=inventory)
+    return render_template('main/index.html')  
 
 # add paganation
 @main.route('/asset/add', methods=['GET', 'POST'])
