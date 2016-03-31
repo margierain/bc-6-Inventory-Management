@@ -1,1 +1,1 @@
-# Investory-Management
+# Inventory-Management
