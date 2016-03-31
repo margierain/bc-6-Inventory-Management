@@ -156,3 +156,19 @@ class Inventory(db.Model):
             "...'" if len(self.description) > 15 else '',
             self.date_assigned
         )    
+class Report_lost(db.Model):
+    __tablename__ = 'lost'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), nullable=False)
+    serial_code = db.Column(db.String(255), nullable=False)
+    asset_name  = db.Column(db.String(255), nullable=False)
+    lost        = db.Column(db.Boolean,default=False)
+   
+    def __init__(self,*args,**kwargs):
+        super(Report_lost,self).__init__(*args,**kwargs)
+
+    def __repr__(self):
+        return '<Report_lost %s>' % self.lost
+
+    
