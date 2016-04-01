@@ -18,7 +18,7 @@ class InventoryRecordsForm(Form):
     date_bought = DateField("Date Purchased",
                           format='%Y/%m/%d',render_kw={"placeholder": "yyyy/mm/dd"})
     confirmed = BooleanField("Confirmed")
-    assigned = BooleanField("Assigned",validators=[Required()],render_kw={"placeholder": "yyyy/mm/dd"})
+    assigned = BooleanField("Assigned", validators=[Required()])
     resolved = BooleanField("Resolved")
     assigned_to_id = SelectField("Assigned To", coerce=str)
     date_assigned = DateField("Date Assigned",
@@ -76,7 +76,7 @@ class EditAdminProfileForm(Form):
 class ReportLostAssetForm(Form):
     name = StringField('Staff name', validators=[Required()])
     serial_code = TextField('Serial code', validators=[Required(), Length(10, 255)])
-    asset_name = SelectField('Name of Asset')
+    asset_name = TextField('Name of Asset')
     lost = BooleanField("Lost Asset")
     submit = SubmitField("Report lost or found Asset")
 

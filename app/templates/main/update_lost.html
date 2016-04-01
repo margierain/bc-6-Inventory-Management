@@ -2,21 +2,15 @@
 {% import "bootstrap/wtf.html" as wtf %}
 {% import "partials/_alert_messages.html" as macros %}
 
-{%block page_content %}
-{% include 'partials/_asset.html' %}
-{% endblock %}
-
 {% block title %}
     Andela Update Inventory
 {% endblock title %}    
 
 {% block content %}
-<div class="row update-page">
-    <h1 class="page-header">Updating inventory: <a href="{{ url_for('main.update_inventory',inventory_id=inventory.id )}}">Serial_code: {{ inventory.serial_code | truncate(40, True) | lower }}</a></h1>
 
     <div class="col-md-4 col-sm-offset-2 ">
         <h2>Inventory Details</h2> <hr>
-        {% include 'partials/_asset.html' %}
+        {% include 'lost_asset.html' %}
     </div>
     <div class="col-md-4">
         <h2> Update Inventory</h2> <hr>
