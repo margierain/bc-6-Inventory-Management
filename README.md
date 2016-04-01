@@ -26,7 +26,7 @@ Once your signed in, depending on your user status i.e an Administrator or a reg
 
 You can easily get a local copy of this application on your workstation. This guide assumes that you have a working installation of Python 3.4 and pip in your workstation
 
- ###### Clone this repository
+###### Clone this repository
 ` $ https://github.com/margierain/bc-6-Inventory-Management.git`
 
 ###### Install project dependencies via pip. It's recommended that you do this in a virtualenv
@@ -73,5 +73,4 @@ Incase your deploying this Inventory Management application the following enviro
 ### Conclusion 
 
 This is an Andela assigned project  to put  my skill on the runway  for both  learning process and evaluation purposes.
-You can finally view it ok [heroku](http://webmart.herokuapp.com)
-
+You can finally view it ok 
