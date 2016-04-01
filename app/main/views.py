@@ -5,7 +5,7 @@ from flask.ext.login import login_required, current_user
 from app import db
 from app.main import main
 
-from app.models import  User,Asset, Inventory
+from app.models import  User,Asset, Inventory, Report_lost
 from app.utils import send_email
 from datetime import datetime
 from app.main.forms import (InventoryRecordsForm, 
@@ -66,13 +66,13 @@ def users_list():
     return render_template('main/index.html')    
 
 
-
 @main.route('/assigned_users_list',methods=['GET', 'POST'])  
 @login_required
 def assigned_users_list():
     if current_user.is_admin:
         inventory = Inventory.query.filter_by(assigned=True).all()
         return render_template('main/assigned_list.html', inventory=inventory)
+
     return render_template('main/index.html')    
     
 @main.route('/not_assigned_asset',methods=['GET', 'POST'])  
@@ -176,19 +176,27 @@ def update_inventory(inventory_id):
     flash('No records changed')
     return render_template('main/update_inventory.html',form=form, inventory=inventory)
 
-@main.route('/Report_lost',methods=['GET', 'POST'])
+@main.route('/loss_asset', methods=['GET', 'POST'])
+@login_required    
+def lost_asset():
+    if not current_user.is_admin or current_user.is_admin:
+        report = Report_lost.query.filter_by(lost=True).all()
+        return render_template('main/report_lost.html', report=report) 
+    return render_template('main/index.html')    
+
+
+@main.route('/report_lost', methods=['GET', 'POST'])
 @login_required
 def report_lost():
     form = ReportLostAssetForm()
 
     if form.validate_on_submit():
-
         lost= Report_lost(name=form.name.data,serial_code=form.serial_code.data,
-                            asset=form.asset_name.data, lost=form.lost.data)
+                            asset_name=form.asset_name.data, lost=form.lost.data)
         db.session.add(lost)
         db.session.commit()
-        send_email(app.config['INVENTORY_ADMIN'],'Report Lost Asset', 'main/email/report_lost', lost_asset=lost)
-        
+        # send_email(app.config['INVENTORY_ADMIN'],'Report Lost Asset', 'main/email/report_lost', lost_asset=lost)
+        return render_template('main/report_lost.html', lost=lost)
     return render_template('main/lost_asset.html', form=form)
 
 
