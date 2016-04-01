@@ -73,4 +73,4 @@ Incase your deploying this Inventory Management application the following enviro
 ### Conclusion 
 
 This is an Andela assigned project  to put  my skill on the runway  for both  learning process and evaluation purposes.
-You can finally view it ok 
+You can finally view on 

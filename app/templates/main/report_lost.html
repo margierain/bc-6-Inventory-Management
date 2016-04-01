@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "partials/_alert_messages.html" as macros %}
+
+
+{% block title %}Report of  Andela assets lost {% endblock %}
+
+{% block page_content %}
+
+    <div class="row">
+        <div class="col-md-8 col-md-offset-4">
+            <div class="page-header text-center">
+                <h1>Asset lost Report</h1>
+            </div>
+            <div class="row">
+                <div class="col-xs-10 col-sm-8 col-sm-offset-2 profile-form">
+                    {{ macros.render_alert('alert-info') }}
+                    <div class="list-group">
+                        {% if report | length > 0 %}
+                            {% for reports in report %}
+                                <a href="{{ url_for('main.update_lost', report_id=reports.id)}}" class="list-group-item"> {{ reports.lost }} </a>
+                            {% endfor %}
+                            {%else%}
+                            <div class="well">
+                            
+                            <p> No Assets are currently Lost</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
