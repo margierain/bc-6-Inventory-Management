@@ -19,7 +19,7 @@ class InventoryRecordsForm(Form):
                           format='%Y/%m/%d',render_kw={"placeholder": "yyyy/mm/dd"})
     confirmed = BooleanField("Confirmed")
     assigned = BooleanField("Assigned", validators=[Required()])
-    resolved = BooleanField("Resolved")
+    revolved = BooleanField("Resolved")
     assigned_to_id = SelectField("Assigned To", coerce=str)
     date_assigned = DateField("Date Assigned",
                                 format='%Y/%m/%d',render_kw={"placeholder": "yyyy/mm/dd"})

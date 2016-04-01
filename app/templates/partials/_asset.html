@@ -23,7 +23,7 @@
                     <td>Assigned To</td>
                     <td>
                         {% if inventory.assigned_to is defined %}
-                            {{ inventory.assigned_to.name }}
+                            {{ inventory.assigned_to_id.name }}
                         {% else %}
                         <small><span class="text-muted">Asset not assigned </span></small>
                         {% endif %}
