@@ -36,6 +36,7 @@ def inventory_detail():
 
     if form.validate_on_submit():
         asset = Asset.query.filter_by(name=form.asset_name.data).first()
+        assigned_to = User.query.filter_by(name=form.assigned_to_id.data).first()
 
         date_bought_string = form.date_bought.data.strftime('%Y/%m/%d')
         date_assigned_string = form.date_assigned.data.strftime('%Y/%m/%d')
@@ -49,12 +50,14 @@ def inventory_detail():
                             serial_no=form.serial_no.data, asset_name=asset.name,
                             description=form.description.data, date_bought=date_bought_object,
                             confirmed=form.confirmed.data, assigned=form.assigned.data,
-                            assigned_to_id=form.assigned_to_id.data,  date_assigned=date_assigned_object, 
+                            revolved=form.revolved.data,
+                            assigned_to_id=assigned_to.id,  date_assigned=date_assigned_object, 
                             date_returned=date_returned_object)
         db.session.add(inventory)
         db.session.commit()
         return redirect(url_for('main.index'))
-    return render_template('main/inventory_detail.html', form=form) 
+    else:    
+        return render_template('main/inventory_detail.html', form=form) 
 
 # renders the list of users in the database
 @main.route('/users', methods=['GET', 'POST'])
@@ -150,15 +153,18 @@ def update_inventory(inventory_id):
     form = InventoryRecordsForm()
     
     if form.validate_on_submit():
+        assigned_to = User.query.filter_by(name=form.assigned_to_id.data).first()
 
         inventory.serial_code = form.serial_code.data
-        inventory.serial_no   = form.serial_no.data
+        inventory.serial_no = form.serial_no.data
         inventory.asset_name = form.asset_name.data
         inventory.description = form.description.data
         inventory.date_bought = form.date_bought.data
-        inventory.confirmed   = form.confirmed.data
+        inventory.confirmed = form.confirmed.data
         inventory.date_assigned = form.date_assigned.data
         inventory.date_returned = form.date_returned.data
+        inventory.revolved = form.revolved.data
+        inventory.assigned_to_id = assigned_to.id
        
         db.session.add(inventory)
     
@@ -168,11 +174,13 @@ def update_inventory(inventory_id):
     form.serial_code.data = inventory.serial_code
     form.serial_no.data   = inventory.serial_no 
     form.asset_name.data  = inventory.asset_name
-    form.description      = inventory.description
+    form.description.data  = inventory.description
     form.date_bought.data = inventory.date_bought
     form.confirmed.data   = inventory.confirmed
     form.date_assigned.data = inventory.date_assigned
-    form.date_returned = inventory.date_returned
+    form.date_returned.data = inventory.date_returned
+    form.revolved.data = inventory.revolved
+    form.assigned.data = inventory.assigned
     flash('No records changed')
     return render_template('main/update_inventory.html',form=form, inventory=inventory)
 
