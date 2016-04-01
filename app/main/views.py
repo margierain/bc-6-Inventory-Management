@@ -36,6 +36,7 @@ def inventory_detail():
 
     if form.validate_on_submit():
         asset = Asset.query.filter_by(name=form.asset_name.data).first()
+        assigned_to = User.query.filter_by(id=int(form.assigned_to_id.data)).first()
 
         date_bought_string = form.date_bought.data.strftime('%Y/%m/%d')
         date_assigned_string = form.date_assigned.data.strftime('%Y/%m/%d')
@@ -49,12 +50,13 @@ def inventory_detail():
                             serial_no=form.serial_no.data, asset_name=asset.name,
                             description=form.description.data, date_bought=date_bought_object,
                             confirmed=form.confirmed.data, assigned=form.assigned.data,
-                            assigned_to_id=form.assigned_to_id.data,  date_assigned=date_assigned_object, 
+                            assigned_to_id=assigned_to.id,  date_assigned=date_assigned_object, 
                             date_returned=date_returned_object)
         db.session.add(inventory)
         db.session.commit()
         return redirect(url_for('main.index'))
-    return render_template('main/inventory_detail.html', form=form) 
+    else:    
+        return render_template('main/inventory_detail.html', form=form) 
 
 # renders the list of users in the database
 @main.route('/users', methods=['GET', 'POST'])
