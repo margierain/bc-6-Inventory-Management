@@ -156,11 +156,11 @@ def update_inventory(inventory_id):
         assigned_to = User.query.filter_by(name=form.assigned_to_id.data).first()
 
         inventory.serial_code = form.serial_code.data
-        inventory.serial_no   = form.serial_no.data
+        inventory.serial_no = form.serial_no.data
         inventory.asset_name = form.asset_name.data
         inventory.description = form.description.data
         inventory.date_bought = form.date_bought.data
-        inventory.confirmed   = form.confirmed.data
+        inventory.confirmed = form.confirmed.data
         inventory.date_assigned = form.date_assigned.data
         inventory.date_returned = form.date_returned.data
         inventory.revolved = form.revolved.data
@@ -174,12 +174,13 @@ def update_inventory(inventory_id):
     form.serial_code.data = inventory.serial_code
     form.serial_no.data   = inventory.serial_no 
     form.asset_name.data  = inventory.asset_name
-    form.description      = inventory.description
+    form.description.data  = inventory.description
     form.date_bought.data = inventory.date_bought
     form.confirmed.data   = inventory.confirmed
     form.date_assigned.data = inventory.date_assigned
-    form.date_returned = inventory.date_returned
+    form.date_returned.data = inventory.date_returned
     form.revolved.data = inventory.revolved
+    form.assigned.data = inventory.assigned
     flash('No records changed')
     return render_template('main/update_inventory.html',form=form, inventory=inventory)
 
