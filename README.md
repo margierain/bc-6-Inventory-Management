@@ -48,7 +48,6 @@ You can easily get a local copy of this application on your workstation. This gu
 
 ` $ python  manage.py runserver`
 
-###### Run the server.
 
 
 Incase your deploying this Inventory Management application the following environment variables have to be set-up.
@@ -66,8 +65,6 @@ Incase your deploying this Inventory Management application the following enviro
 1. More testing needs to be  done to verify, all the functionalities work properly
 
 2. Add  features that will enable staff member (users) to request for assets they need
-
-
 
 
 ### Conclusion 
