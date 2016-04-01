@@ -15,6 +15,7 @@
                     {{ macros.render_alert('alert-danger') }}
                 </div>
                 <div class="col-sm-8 col-sm-offset-2">
+                    <div class="well">
                     {{ wtf.quick_form(form) }}
                     <br/>
                     New User?
@@ -22,6 +23,7 @@
                     <br>
                     Forgot your password?
                     <a href="{{ url_for('auth.password_reset_request')}}">Click Here.</a>
+                    </div>
                 </div>
             </div>
         </div>
