@@ -19,7 +19,10 @@
                             {% if  current_user.is_authenticated %}
                             <li>
                                 <a href="{{url_for('main.index')}}" class="navbar-link"> Home </a>
-                                </li>
+                            </li>
+                             <li>
+                                <a href="{{url_for('main.report_lost')}}" class="navbar-link"> Report lost Asset </a>
+                            </li>
                             {% endif %}
                             {% if not current_user.is_authenticated %}
                                 <li>
@@ -75,6 +78,12 @@
                             </li>
                             <li>
                                 <a href="{{ url_for('main.users_list')}}">Staff Members</a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for('main.assigned_users_list')}}">Assigned Assets</a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for('main.not_assigned_asset')}}">Unassigned Assets</a>
                             </li>
                         </ul><hr>
                         {% endif %}
